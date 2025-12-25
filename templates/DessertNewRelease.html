@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/css/DessertNewRelease.css}">
+</head>
+<body>
+<div id="container" style="position: relative;">
+    <h3>新品上市</h3>
+    <div class="dessert" th:each="dessertDetail,stat:${dessertDetails}">
+        <img class="photo" th:src="${dessertDetail.photoUrl}" src=" photo/001.jpg">
+        <span class="dessert-name">[[${dessertDetail.name}]]</span>
+        <span class="release-date">【[[${#dates.format(dessertDetail.releaseDate,'yy-MM-dd')}]]】
+            ¥[[ ${#numbers.formatDecimal(dessertDetail.price, 0, 0)} ]]</span>
+        <span class="descp">[[${dessertDetail.descp}]]</span>
+    </div>
+    <div th:remove="all" class="dessert" >
+        <img class="photo" src="photo/001.jpg">
+        <span class="dessert-name">鲜果凉粉椰芒汁Ⅱ</span>
+        <span class="release-date">【22-04-05】 ¥25</span>
+        <span class="descp">新鲜水果料足量多,吸引入眼球.造型独特味道赞! </span>
+    </div>
+</div>
+</body>
+</html>
+
+

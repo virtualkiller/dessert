@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/css/Category.css}" >
+</head>
+<div id="container" style="position: relative;">
+    <h3>分类管理</h3>
+    <button id="btnAdd" onclick="location.href='category/add'">增加</button>
+    <table>
+        <tr style="font-weight: bold;"><td>#</td><td>名称</td><td>描述</td><td>编辑</td><td>删除</td></tr>
+        <tr th:each="category,stat:${categories}">
+            <td>[[${stat.count}]]</td>
+            <td>[[${category.name}]]</td>
+            <td>[[${category.descp}]]</td>
+            <td><a th:href="@{'/category/edit/'+${category.id}}">编辑</a></td>
+            <td><a href="#" th:onclick="del([[${category.id}]]);" >删除</a></td>
+        </tr>
+
+    </table>
+</div>
+<script>
+    function del(id){
+        if (confirm('确认删除？')){
+            window.location.href = "category/del/"+id;
+        }
+    }
+</script>
+</html>

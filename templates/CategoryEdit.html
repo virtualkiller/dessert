@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/css/CategoryEdit.css}">
+</head>
+<div id="container">
+    <h3>编辑分类</h3>
+    <form th:action="@{/category}" action="Category.html" method="post">
+        <h4>分类名称</h4>
+        <input name="name" value="凉粉系列" th:value="${category.name}"><br>
+        <h4 style="vertical-align: top">分类描述</h4>
+        <textarea name="descp">[[${category.descp}]]</textarea><br>
+        <h4></h4>
+        <button id="edit" type="submit"><span>确定</span></button><br>
+        <input type="hidden" name="_method" value="put" th:if="${category!=null}"/>
+        <input type="hidden" name="id" th:if="${category!=null}" th:value="${category.id}">
+    </form>
+</div>
+</html>

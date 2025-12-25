@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/css/Dessert.css}">
+</head>
+<div id="container" style="position: relative;">
+    <h3>甜点管理</h3>
+    <button id="btnAdd" onclick="location.href='dessert/add'" sec:authorize="hasRole('admin')">添加</button>
+    <form th:action="@{/search}" id="searchDiv" method="post">
+        分类<select class="searchCondition" name="catId">
+        <option value="0">不予限制</option>
+        <option th:each="category:${categories}" th:value="${category.id}"
+        th:selected="${condition!=null and category.id==condition.catId}">[[${category.name}]]</option>
+    </select>
+        名称<input class="searchCondition" type="text" name="name"
+                    th:value="${condition!=null}?${condition.name}">
+        描述<input class="searchCondition" type="text" name="descp"
+                   th:value="${condition!=null}?${condition.descp}">
+        价格区间<input class="priceInput" type="number" name="price1"
+                    th:value="${condition!=null}?${condition.price1}"> -
+        <input class="priceInput" type="number" name="price2"
+               th:value="${condition!=null}?${condition.price2}">
+        <button id="btnSearch" type="submit" sec:authorize="hasAnyRole('admin','normal')">查询</button>
+        <input type='hidden' id='inputPageNum' name='pageNum'>
+    </form>
+    <table>
+        <tr style="font-weight: bold;">
+            <td>#</td><td>名称</td><td>照片</td><td>价格</td><td>描述</td><td>分类</td><td>推出日</td><td>编辑</td><td>删除</td></tr>
+            <tr th:each="dessertDetail,stat:${dessertDetails}">
+                <td>[[${stat.count}]]</td><td>[[${dessertDetail.name}]]</td>
+                <td><img class="photo" th:src="@{ ${dessertDetail.photoUrl} }"></td>
+                <td>[[${#numbers.formatDecimal(dessertDetail.price,0,0)}]]</td>
+                <td>[[${dessertDetail.descp}]]</td>
+                <td>[[${dessertDetail.categoryName}]]</td>
+                <td>[[${#dates.format(dessertDetail.releaseDate,'yyyy/MM/dd')}]]</td>
+            <td><a th:href="@{'/dessert/edit/'+${dessertDetail.id}}" sec:authorize="hasRole('admin')">编辑</a></td>
+            <td><a href="#" th:onclick="del( [[${dessertDetail.id}]]);"sec:authorize="hasRole('admin')">删除</a></td></tr>
+    </table>
+    <div id="pager">
+        <p>当前 <span th:text="${pageInfo.pageNum}"></span> 页,
+            总 <span th:text="${pageInfo.pages}"></span> 页,
+            共 <span th:text="${pageInfo.total}"></span> 条记录 </p>
+        <a th:href="@{/desserts}" onclick="goPage(this);return false;">首页</a>
+        <a th:href="@{/desserts(pageNum=${pageInfo.hasPreviousPage}?${pageInfo.prePage}:1)}" onclick="goPage(this);return false;">上一页</a>
+        <a th:href="@{/desserts(pageNum=${pageInfo.hasNextPage}?${pageInfo.nextPage}:${pageInfo.pages})}" onclick="goPage(this);return false;">下一页</a>
+        <a th:href="@{/desserts(pageNum=${pageInfo.pages})}" onclick="goPage(this);return false;">尾页</a>
+        <script>
+            function goPage(a){
+                let pageNumValue = a.href.toString().substring(a.href.toString().indexOf("=")+1);
+                if(isNaN(pageNumValue)){
+                    pageNumValue=1;
+                }
+                let inputPageNum = document.getElementById("inputPageNum")
+                inputPageNum.setAttribute('value',pageNumValue);
+                document.getElementById("searchDiv").submit();
+            }
+
+            function del(id){
+                if (confirm('确认删除？')){
+                    window.location.href="dessert/del/"+id;
+                }
+            }
+        </script>
+    </div>
+</div>
+</html>

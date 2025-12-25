@@ -1,0 +1,45 @@
+<!DOCTYPE html><html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/css/DessertEdit.css}" >
+    <script th:src="@{/js/jquery-3.6.0.min.js}"></script>
+</head>
+<body>
+<div id="container">
+    <h3>编辑甜点</h3>
+    <form th:action="@{/dessert}" method="post" enctype="multipart/form-data">
+        <div id="leftContent" >
+            <h4>名称</h4> <input name="name" th:value="${dessert.name}" ><br>
+            <h4>价格</h4>
+            <input name="price" type="number" th:value="${dessert.price}"><br>
+            <h4>描述</h4>
+            <textarea name="descp" style="vertical-align: top">[[${dessert.descp}]] </textarea><br>
+            <h4>发布</h4>
+            <input name="releaseDate" type="date"
+                   th:value="${#dates.format(dessert.releaseDate, 'yyyy-MM-dd')}" > <br>
+            <h4>分类</h4>
+            <select name="catId">
+                <th:block th:each="category,stat:${categories}">
+                <option th:value="${category.id}"
+                        th:selected="${category.id==dessert.catId}">[[${category.name}]]
+                </option>
+            </th:block>
+            </select><br>
+            <h4></h4><button id="edit" type="submit"><span>确定</span></button><br>
+        </div>
+        <div id="rightContent">
+            <img id="photoImg" th:src="@{${dessert.photoUrl}}" src="photo/dessertIcon.png"><br>
+            <input type="file" name="photo" id="photo" >
+        </div>
+        <script>
+            $("#photo").change(function(){
+                $("#photoImg").attr("src", URL.createObjectURL($(this)[0].files[0]));
+            });
+        </script>
+        <input type="hidden" name="_method" value="put" />
+        <input type="hidden" name="id"  th:value="${dessert.id}">
+    </form>
+</div>
+</body>
+</html>

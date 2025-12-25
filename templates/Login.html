@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/css/Login.css}">
+
+</head>
+<body>
+<div id="container">
+    <h3>用户登录</h3>
+    <h3 th:if="${error!=null}">用户名或密码错误</h3>
+    <h3 th:if="${logout!=null}">已退出</h3>
+    <form th:action="@{/login}" action="Index.html" method="post">
+        <h4>账号</h4> <input name="username"><br>
+        <h4>密码</h4> <input name="password" type="password"><br>
+        <h4><span style="cursor:pointer; font-weight: normal;color:blueviolet" onclick="location.href='/register'">注册</span></h4>
+        <button id="login"  type="submit"><span>登录</span></button><br>
+        <span style="cursor:pointer;line-height: 2em;color:blueviolet">忘记密码</span>
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+    </form>
+</div>
+</body>
+</html>

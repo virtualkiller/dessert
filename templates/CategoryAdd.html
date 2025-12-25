@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/css/CategoryAdd.css}" >
+</head>
+<div id="container">
+    <h3>添加分类</h3>
+    <form th:action="@{/category}" method="post">
+        <h4>分类名称</h4>
+        <input name="name"><br>
+        <h4 style="vertical-align: top">分类描述</h4>
+        <textarea name="descp"></textarea><br>
+        <h4></h4>
+        <button id="add" type="submit"><span>确定</span></button> <br>
+    </form>
+</div>
+</html>
